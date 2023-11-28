@@ -1,20 +1,18 @@
 # https://vjudge.net/contest/578315#problem/D
 
-def d(n):
-    if n == 0:
-        return 1
-
-    f = [0] * (n+1)
-    g = [0] * (n+1)
-    f[0], f[1] = 1, 0
-    g[0], g[1] = 0, 1
+def c_machine(s):
+    if 'm' in s or 'w' in s:
+        return 0
     
-    for i in range(2, n+1):
-        f[i] = f[i-2] + 2 * g[i-1]
-        g[i] = f[i-1] + g[i-2]
-    return f[n]
+    memo = [0] * (len(s) + 1)
+    memo[0], memo[1] = 1, 1
+    
+    for i in range(2, len(s) + 1):
+        if s[i-2:i] == "uu" or s[i-2:i] == "nn":
+            memo[i] = (memo[i-1] + memo[i-2]) % (10**9 + 7)
+        else:
+            memo[i] = memo[i-1]
+    return memo[len(s)]
 
-s = int(input())
-while s != -1:
-    print(d(s))
-    s = int(input())
+s = input()
+print(c_machine(s))
